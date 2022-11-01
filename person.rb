@@ -19,11 +19,10 @@ class Person < Nameable
   def correct_name
     @name
   end
-  
+
   private
 
   def of_age?
     @age >= 18
   end
-
 end
