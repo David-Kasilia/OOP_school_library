@@ -16,13 +16,14 @@ class Person < Nameable
     @parent_permission || is_of_age?
   end
 
-  private :of_age?
+  def correct_name
+    @name
+  end
+  
+  private
 
   def of_age?
     @age >= 18
   end
 
-  def correct_name
-    @name
-  end
 end
