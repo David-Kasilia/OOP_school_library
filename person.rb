@@ -1,4 +1,6 @@
-class Person
+require './nameable'
+
+class Person < Nameable
   attr_reader :id
   attr_accessor :name, :age
 
@@ -17,5 +19,9 @@ class Person
 
   def of_age?
     @age >= 18
+  end
+
+  def correct_name
+    @name
   end
 end
