@@ -57,3 +57,19 @@ class App
         @books.push(Book.new(title, author))
         puts "#{title} book was added successfully"
     end
+   # Create a rental 
+   def create_a_rental()
+    puts 'Select a book from the following list by the book number: '
+    list_all_books
+    book_number = gets.chomp.to_i
+    puts 'Book selected'
+    puts 'Select a person from the following list by the person\'s number: '
+    list_all_people
+    person_number = gets.chomp.to_i
+    puts 'Person selected'
+    print 'Date: '
+    date = gets.chomp
+    puts 'Date of renting book is added'
+    @rentals.push(Rental.new(date, @people[person_number - 1], @books[book_number - 1]))
+    puts 'Rental book created successfully'
+    end    
