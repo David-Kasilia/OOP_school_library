@@ -17,7 +17,7 @@ class App
             puts "(#{index + 1}) Book => Title: #{book.title}, Author: #{book.author}"
         end
     end
-    
+
     # List all people method
     def list_all_people
         puts 'There are no people in the list. Kindly add at least one person' if @people.empty?
@@ -92,3 +92,42 @@ class App
             end
         end
     end
+    
+    # Main menu list method
+    def main_menu
+        puts 'Main menu'
+        puts 'Please choose an option by entering a number:
+        1 - List all Books
+        2 - List all People
+        3 - Create a person
+        4 - Create a book
+        5 - Create a rental
+        6 - List all rentals for a given person id
+        7 - Exit Library'
+        puts 'Waiting for Selection...'
+    end
+
+    # Handle main menu selction 
+    def menu_selection
+        main_menu
+        selected = gets.chomp.to_i
+        case selected
+        when 1
+            list_all_books
+        when 2
+            list_all_people
+        when 3
+            create_a_person
+        when 4
+            create_a_book
+        when 5
+            create_a_rental
+        when 6
+            list_all_rentals
+        when 7
+            puts 'Thank you for using OOP school Library'
+            exit
+        end
+        menu_selection
+    end
+end
