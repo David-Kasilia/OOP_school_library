@@ -47,3 +47,13 @@ class App
             puts "#{name.capitalize} was added as a teacher successfully"
         end
     end
+      # Create a book
+      def create_a_book
+        puts 'Create a new book'
+        print 'Enter the book title: '
+        title = gets.chomp
+        print 'Enter the book author: '
+        author = gets.chomp
+        @books.push(Book.new(title, author))
+        puts "#{title} book was added successfully"
+    end
