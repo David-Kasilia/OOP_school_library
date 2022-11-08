@@ -53,12 +53,7 @@ class App
     selected_person = @people.select { |person| person.id == id }
     @rentals.each do |rental|
       if rental.person == selected_person[0]
-        puts "Person: #{rental.person.name}
-        Date: #{rental.date},
-        Book '#{rental.book.title}' written by #{rental.book.author}"
-      else
-        puts 'Checking for person......'
-        puts 'No rentals found for the given ID for person'
+        puts "Date: #{rental.date}, Book '#{rental.book.title}' written by #{rental.book.author}"
       end
     end
   end

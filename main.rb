@@ -1,24 +1,17 @@
 require './app'
-require './run_app'
+require './menu_selection'
+require './classes_methods/create_a_person'
+require './classes_methods/create_book'
+require './classes_methods/create_rentals'
+require './classes_methods/list_all_books'
+require './classes_methods/list_all_people'
+require './classes_methods/list_all_rentals'
 
 def exit_app(app)
   app.exit
   puts 'Library Data Has Been Saved'
+  puts 'Thank you for using OOP School Library. See you Again!!'
   false
-end
-
-def menu_options
-  [
-    'Welcome To The Main Menu',
-    'Please select an option by entering a number:',
-    '1 - List all books',
-    '2 - List all people',
-    '3 - Create a person',
-    '4 - Create a book',
-    '5 - Create a rental',
-    '6 - List all rentals for a given person id',
-    '7 - Save all data and Exit Library'
-  ]
 end
 
 def main
@@ -27,15 +20,15 @@ def main
 
   app_should_run = true
   while app_should_run
-    puts menu_options
+    puts MainMenuOptions.menu_options
     user_selection = gets.to_i
     case user_selection
-    when 1 then list_all_books(app.books)
-    when 2 then list_all_people(app.people)
-    when 3 then create_a_person(app)
-    when 4 then create_book(app)
-    when 5 then create_rental(app)
-    when 6 then list_all_rentals(app)
+    when 1 then ListAllBooks.list_all_books(app.books)
+    when 2 then ListAllPeople.list_all_people(app.people)
+    when 3 then CreatePerson.create_a_person(app)
+    when 4 then CreateBook.create_book(app)
+    when 5 then CreateRentals.create_rental(app)
+    when 6 then ListAllRentals.list_all_rentals(app)
     when 7
       app_should_run = exit_app(app)
       break
