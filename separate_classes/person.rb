@@ -1,5 +1,4 @@
 require_relative './nameable'
-require_relative('./rental')
 
 class Person < Nameable
   attr_reader :id
@@ -15,15 +14,24 @@ class Person < Nameable
   end
 
   def can_use_services?
-    @parent_permission || is_of_age?
+    if is_of_age? || parent_permission
+      true
+    else
+      false
+    end
   end
 
   def correct_name
     @name
   end
 
-  def add_book_rental(book, date)
-    Rental.new(date, book, self)
+  def add_book_rental(rental)
+    @rentals.push(rental) unless @rentals.include?(rental)
+  end
+
+  def create_object
+    object_data = {age: @age, name: @name, id: @id}
+    @object_data = object_data
   end
 
   private

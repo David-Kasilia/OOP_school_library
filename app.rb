@@ -1,90 +1,58 @@
-require_relative './book'
-require_relative './rental'
-require_relative './student'
-require_relative './teacher'
+require_relative './separate_classes/book'
+require_relative './separate_classes/rental'
+require_relative './separate_classes/student'
+require_relative './separate_classes/teacher'
+require_relative './data_class/store_data'
+require_relative './separate_classes/person'
+require_relative './separate_classes/nameable'
+require_relative './separate_classes/classroom'
+require 'json'
 
 class App
+  attr_reader :books, :people, :rentals, :id
   def initialize
-    @books = []
-    @rentals = []
-    @people = []
-  end
-
-  # List all books method
-  def list_all_books
-    puts 'There are no books found, Kindly add at least one book' if @books.empty?
-    @books.each_with_index do |book, index|
-      puts "(#{index + 1}) Book => Title: #{book.title}, Author: #{book.author}"
+    @book_file = StoreData.new('books')
+    @people_file = StoreData.new('persons')
+    @rentals_file = StoreData.new('rentals')
+    @books = @book_file.read.map { |arr| Book.new(arr['title'], arr['author']) }
+    @people = @people_file.read.map do |arr|
+      if arr['class'].include?('Student')
+        Student.new(arr['age'], arr['name'], arr['parent_permission'], arr['classroom'])
+      else
+        Teacher.new(arr['age'], arr['name'], arr['specialization'])
+      end
+    end
+    @rentals = @rentals_file.read.map do |arr|
+      book = @books.select { |bk| bk.title == arr['book_title'] }[0]
+      person = @people.select { |pers| pers.id == arr['person_id'] }[0]
+      Rental.new(book, person, arr['date'])
     end
   end
 
-  # List all people method
-  def list_all_people
-    puts 'There are no people in the list. Kindly add at least one person' if @people.empty?
-    @people.each_with_index do |person, index|
-      puts "(#{index + 1}) [#{person.class}] => Id: #{person.id}, Name: #{person.name}, Age: #{person.age}"
-    end
+  def create_a_student(age, name, permission)
+    new_person = Student.new(age, name, permission)
+    @people.push(new_person)
   end
 
-  # Create a person method (teacher or student not a plain person)
-  def create_a_person()
-    puts 'Do you want to create a student(1) or a teacher(2)? [Enter a number 1 or 2]: '
-    cartegory = gets.chomp.to_i
-    case cartegory
-    when 1
-      print 'Enter the student name: '
-      name = gets.chomp
-      print 'Enter the student\'s age: '
-      age = gets.chomp
-      @people.push(Student.new('classroom', name, age))
-      puts "#{name.capitalize} was added as a student successfully"
-    when 2
-      print 'Enter the teacher name: '
-      name = gets.chomp
-      print 'Enter the teacher\'s age: '
-      age = gets.chomp
-      print 'Enter the teacher\'s specialization: '
-      specialization = gets.chomp
-      @people.push(Teacher.new(specialization, name, age))
-      puts "#{name.capitalize} was added as a teacher successfully"
-    end
+  def create_a_teacher(age, name, specialization)
+    new_person = Teacher.new(age, name, specialization)
+    @people.push(new_person)
   end
 
-  # Create a book
-  def create_a_book
-    puts 'Create a new book'
-    print 'Enter the book title: '
-    title = gets.chomp
-    print 'Enter the book author: '
-    author = gets.chomp
-    @books.push(Book.new(title, author))
-    puts "#{title} book was added successfully"
+  def create_a_book(title, author)
+    new_book = Book.new(title, author)
+    @books.push(new_book)
   end
 
-  # Create a rental
-  def create_a_rental()
-    puts 'Select a book from the following list by the book number: '
-    list_all_books
-    book_number = gets.chomp.to_i
-    puts 'Book selected'
-    puts 'Select a person from the following list by the person\'s number: '
-    list_all_people
-    person_number = gets.chomp.to_i
-    puts 'Person selected'
-    print 'Date: '
-    date = gets.chomp
-    puts 'Date of renting book is added'
-    @rentals.push(Rental.new(date, @people[person_number - 1], @books[book_number - 1]))
-    puts 'Rental book created successfully'
+  def create_a_rental(book, person)
+    rental = Rental.new(book, person)
+    @rentals.push(rental)
   end
 
-  # List all rentals for a given person id
-  def list_all_rentals
-    print 'Enter Person\'s ID: '
-    id = gets.chomp.to_i
-    puts 'List of all Rentals books: '
+  def list_rentals_for_given_id(id)
+    selected_person = @people.select { |person| person.id == id }
     @rentals.each do |rental|
-      if rental.person.id == id
+      if rental.person == selected_person[0]
         puts "Person: #{rental.person.name}
         Date: #{rental.date},
         Book '#{rental.book.title}' written by #{rental.book.author}"
@@ -95,43 +63,10 @@ class App
     end
   end
 
-  # Main menu list method
-  def main_menu
-    puts 'Main menu'
-    puts 'Please choose an option by entering a number:
-        1 - List all Books
-        2 - List all People
-        3 - Create a person
-        4 - Create a book
-        5 - Create a rental
-        6 - List all rentals for a given person id
-        7 - Exit Library'
-    puts 'Waiting for Selection...'
+  def exit
+    @book_file.write(@books.map(&:create_object))
+    @people_file.write(@people.map(&:create_object))
+    @rentals_file.write(@rentals.map(&:create_object))
   end
 
-  # Handle main menu selction
-  # rubocop:disable Metrics/CyclomaticComplexity
-  def menu_selection
-    main_menu
-    selected = gets.chomp.to_i
-    case selected
-    when 1
-      list_all_books
-    when 2
-      list_all_people
-    when 3
-      create_a_person
-    when 4
-      create_a_book
-    when 5
-      create_a_rental
-    when 6
-      list_all_rentals
-    when 7
-      puts 'Thank you for using OOP school Library'
-      exit
-    end
-    menu_selection
-  end
-  # rubocop:enable Metrics/CyclomaticComplexity
 end

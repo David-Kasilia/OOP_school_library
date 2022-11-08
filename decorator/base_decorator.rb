@@ -1,5 +1,5 @@
 # Base decorator
-require './nameable'
+require './separate_classes/nameable'
 
 class BaseDecorator < Nameable
   def initialize(nameable)
