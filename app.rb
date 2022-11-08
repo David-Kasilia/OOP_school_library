@@ -10,6 +10,7 @@ require 'json'
 
 class App
   attr_reader :books, :people, :rentals, :id
+
   def initialize
     @book_file = StoreData.new('books')
     @people_file = StoreData.new('persons')
@@ -63,5 +64,4 @@ class App
     @people_file.write(@people.map(&:create_object))
     @rentals_file.write(@rentals.map(&:create_object))
   end
-
 end

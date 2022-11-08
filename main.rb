@@ -7,6 +7,7 @@ require './classes_methods/list_all_books'
 require './classes_methods/list_all_people'
 require './classes_methods/list_all_rentals'
 
+# rubocop:disable Metrics/CyclomaticComplexity
 def exit_app(app)
   app.exit
   puts 'Library Data Has Been Saved'
@@ -38,3 +39,4 @@ def main
 end
 
 main
+# rubocop:enable Metrics/CyclomaticComplexity

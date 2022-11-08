@@ -16,6 +16,5 @@ class Teacher < Person
     object_data[:specialization] = @specialization
     object_data[:class] = 'Teacher'
     object_data
-    
   end
 end

@@ -30,7 +30,7 @@ class Person < Nameable
   end
 
   def create_object
-    object_data = {age: @age, name: @name, id: @id}
+    object_data = { age: @age, name: @name, id: @id }
     @object_data = object_data
   end
 

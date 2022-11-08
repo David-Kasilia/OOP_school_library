@@ -1,5 +1,4 @@
 class MainMenu
-
   def start_menu
     puts 'Welcome to The OOP School Library Application'
     until main_menu
@@ -11,9 +10,10 @@ class MainMenu
       menu_selection selection
     end
   end
+
   def main_menu
     puts 'Welcome To The Main menu'
-    puts 'Please choose an option by entering a number: 
+    puts 'Please choose an option by entering a number:
         1 - List all Books
         2 - List all People
         3 - Create a person

@@ -12,5 +12,4 @@ class MainMenuOptions
       '7 - Save all data and Exit Library'
     ]
   end
-  
 end
