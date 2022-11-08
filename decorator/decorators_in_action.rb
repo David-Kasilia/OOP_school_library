@@ -1,4 +1,4 @@
-require_relative './person'
+require_relative './separate_classes/person'
 require_relative './capitalize_people_name_decorator'
 require_relative './trim_peoples_name_decorator'
 
